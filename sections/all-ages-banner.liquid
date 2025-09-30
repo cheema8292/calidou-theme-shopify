@@ -1,0 +1,381 @@
+<!-- sections/all-ages-banner.liquid -->
+<style>
+    .all-ages-section {
+        background-color: {
+                {
+                section.settings.background_color
+            }
+        }
+
+        ;
+
+        height: {
+                {
+                section.settings.section_height
+            }
+        }
+
+        px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px 0;
+    }
+
+    .all-ages-section .custom-container {
+        width: {
+                {
+                section.settings.container_width
+            }
+        }
+
+        px;
+        max-width: 90%;
+    }
+
+    .all-ages-text {
+        color: {
+                {
+                section.settings.text_color
+            }
+        }
+
+        ;
+
+        text-align: {
+                {
+                section.settings.text_alignment
+            }
+        }
+
+        ;
+    }
+
+    .all-ages-text .heading {
+        font-weight: {
+                {
+                section.settings.heading_weight
+            }
+        }
+
+        ;
+
+        margin-bottom: {
+                {
+                section.settings.heading_spacing
+            }
+        }
+
+        rem;
+
+        font-size: {
+                {
+                section.settings.heading_size
+            }
+        }
+
+        px;
+
+        text-transform: {
+                {
+                section.settings.heading_transform
+            }
+        }
+
+        ;
+    }
+
+    .all-ages-text .description {
+        font-size: {
+                {
+                section.settings.description_size
+            }
+        }
+
+        px;
+
+        line-height: {
+                {
+                section.settings.description_line_height
+            }
+        }
+
+        ;
+        margin-bottom: 0;
+    }
+
+        {
+        % if section.settings.show_divider %
+    }
+
+    .all-ages-text .heading {
+        position: relative;
+
+        padding-bottom: {
+                {
+                section.settings.divider_spacing
+            }
+        }
+
+        rem;
+    }
+
+    .all-ages-text .heading::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+
+        width: {
+                {
+                section.settings.divider_width
+            }
+        }
+
+        px;
+
+        height: {
+                {
+                section.settings.divider_thickness
+            }
+        }
+
+        px;
+
+        background-color: {
+                {
+                section.settings.divider_color
+            }
+        }
+
+        ;
+    }
+
+        {
+        % endif %
+    }
+</style>
+
+<section class="all-ages-section">
+    <div class="custom-container text-center p-3">
+        <div class="all-ages-text">
+            <!-- Heading -->
+            <p class="heading mb-1">{{ section.settings.heading_text }}</p>
+
+            <!-- Description -->
+            <p class="description">{{ section.settings.description_text }}</p>
+        </div>
+    </div>
+</section>
+
+{% schema %}
+{
+"name": "All Ages Banner",
+"settings": [
+{
+"type": "text",
+"id": "heading_text",
+"label": "Heading Text",
+"default": "All Ages. All Stages.™"
+},
+{
+"type": "textarea",
+"id": "description_text",
+"label": "Description Text",
+"default": "Transform routines into rituals with safe, scientifically-proven formulas for the whole family."
+},
+{
+"type": "color",
+"id": "background_color",
+"label": "Background Color",
+"default": "#003C61"
+},
+{
+"type": "color",
+"id": "text_color",
+"label": "Text Color",
+"default": "#FFFFFF"
+},
+{
+"type": "range",
+"id": "section_height",
+"label": "Section Height",
+"min": 100,
+"max": 300,
+"step": 10,
+"default": 170,
+"unit": "px"
+},
+{
+"type": "range",
+"id": "container_width",
+"label": "Container Width",
+"min": 300,
+"max": 800,
+"step": 50,
+"default": 500,
+"unit": "px"
+},
+{
+"type": "select",
+"id": "text_alignment",
+"label": "Text Alignment",
+"options": [
+{
+"value": "left",
+"label": "Left"
+},
+{
+"value": "center",
+"label": "Center"
+},
+{
+"value": "right",
+"label": "Right"
+}
+],
+"default": "center"
+},
+{
+"type": "range",
+"id": "heading_size",
+"label": "Heading Font Size",
+"min": 16,
+"max": 36,
+"step": 1,
+"default": 18,
+"unit": "px"
+},
+{
+"type": "range",
+"id": "description_size",
+"label": "Description Font Size",
+"min": 12,
+"max": 24,
+"step": 1,
+"default": 16,
+"unit": "px"
+},
+{
+"type": "select",
+"id": "heading_weight",
+"label": "Heading Font Weight",
+"options": [
+{
+"value": "normal",
+"label": "Normal"
+},
+{
+"value": "bold",
+"label": "Bold"
+},
+{
+"value": "600",
+"label": "Semi Bold"
+},
+{
+"value": "800",
+"label": "Extra Bold"
+}
+],
+"default": "bold"
+},
+{
+"type": "select",
+"id": "heading_transform",
+"label": "Heading Text Transform",
+"options": [
+{
+"value": "none",
+"label": "None"
+},
+{
+"value": "uppercase",
+"label": "Uppercase"
+},
+{
+"value": "lowercase",
+"label": "Lowercase"
+},
+{
+"value": "capitalize",
+"label": "Capitalize"
+}
+],
+"default": "uppercase"
+},
+{
+"type": "range",
+"id": "heading_spacing",
+"label": "Heading Bottom Spacing",
+"min": 0.25,
+"max": 2,
+"step": 0.25,
+"default": 0.25,
+"unit": "rem"
+},
+{
+"type": "range",
+"id": "description_line_height",
+"label": "Description Line Height",
+"min": 1.2,
+"max": 2,
+"step": 0.1,
+"default": 1.5
+},
+{
+"type": "header",
+"content": "Divider Settings"
+},
+{
+"type": "checkbox",
+"id": "show_divider",
+"label": "Show Divider Under Heading",
+"default": false
+},
+{
+"type": "color",
+"id": "divider_color",
+"label": "Divider Color",
+"default": "#FFFFFF"
+},
+{
+"type": "range",
+"id": "divider_width",
+"label": "Divider Width",
+"min": 20,
+"max": 200,
+"step": 10,
+"default": 60,
+"unit": "px"
+},
+{
+"type": "range",
+"id": "divider_thickness",
+"label": "Divider Thickness",
+"min": 1,
+"max": 10,
+"step": 1,
+"default": 2,
+"unit": "px"
+},
+{
+"type": "range",
+"id": "divider_spacing",
+"label": "Divider Spacing",
+"min": 0.5,
+"max": 2,
+"step": 0.25,
+"default": 0.75,
+"unit": "rem"
+}
+],
+"presets": [
+{
+"name": "All Ages Banner",
+"category": "Promotional"
+}
+]
+}
+{% endschema %}

@@ -1,0 +1,697 @@
+<!-- sections/made-in-canada.liquid -->
+<style>
+  .made-in-canada-section {
+    background: {{ section.settings.background_color }};
+    padding: {{ section.settings.section_padding }}px 0;
+  }
+
+  .made-in-canada-section h2 {
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_size }}px;
+    margin-bottom: {{ section.settings.heading_spacing }}px;
+  }
+
+  .made-in-canada-section .subheading {
+    color: {{ section.settings.subheading_color }};
+    font-size: {{ section.settings.subheading_size }}px;
+    line-height: {{ section.settings.subheading_line_height }};
+  }
+
+  .vector-icon img {
+    width: {{ section.settings.icon_size }}px;
+    height: {{ section.settings.icon_size }}px;
+    display: inline-block;
+    margin-bottom: {{ section.settings.icon_margin_bottom }}px;
+    margin-left: {{ section.settings.icon_margin_left }}px;
+    vertical-align: middle;
+  }
+
+  .feature-card {
+    background: {{ section.settings.card_background }};
+    border: {{ section.settings.card_border_width }}px solid {{ section.settings.card_border_color }};
+    border-radius: {{ section.settings.card_border_radius }}px;
+    padding: {{ section.settings.card_padding }}px;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  }
+
+  .icon-circle {
+    width: {{ section.settings.icon_circle_size }}px;
+    height: {{ section.settings.icon_circle_size }}px;
+    background: {{ section.settings.icon_background }};
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: {{ section.settings.icon_color }};
+    font-size: {{ section.settings.icon_font_size }}px;
+  }
+
+  .feature-card h6 {
+    color: {{ section.settings.card_title_color }};
+    font-size: {{ section.settings.card_title_size }}px;
+    font-weight: {{ section.settings.card_title_weight }};
+    margin-bottom: 15px;
+  }
+
+  .feature-card p {
+    color: {{ section.settings.card_text_color }};
+    font-size: {{ section.settings.card_text_size }}px;
+    line-height: {{ section.settings.card_text_line_height }};
+    margin-bottom: 0;
+  }
+
+  .quality-section {
+    background: {{ section.settings.quality_background }};
+    border-radius: {{ section.settings.quality_border_radius }}px;
+    overflow: hidden;
+    margin-top: {{ section.settings.quality_section_margin }}px;
+  }
+
+  .quality-section img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .quality-content {
+    padding: {{ section.settings.quality_padding }}px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .quality-content h4 {
+    color: {{ section.settings.quality_title_color }};
+    font-size: {{ section.settings.quality_title_size }}px;
+    font-weight: {{ section.settings.quality_title_weight }};
+    margin-bottom: 20px;
+  }
+
+  .quality-content p {
+    color: {{ section.settings.quality_text_color }};
+    font-size: {{ section.settings.quality_text_size }}px;
+    line-height: {{ section.settings.quality_text_line_height }};
+    margin-bottom: 30px;
+  }
+
+  .quality-btn {
+    border: 2px solid {{ section.settings.quality_button_border }};
+    border-radius: 50px;
+    padding: 10px 25px;
+    color: {{ section.settings.quality_button_text }};
+    background: {{ section.settings.quality_button_background }};
+    text-decoration: none;
+    display: inline-block;
+    font-size: {{ section.settings.quality_button_size }}px;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+  }
+
+  .quality-btn:hover {
+    background: {{ section.settings.quality_button_hover_background }};
+    color: {{ section.settings.quality_button_hover_text }};
+    border-color: {{ section.settings.quality_button_hover_border }};
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .made-in-canada-section {
+      padding: 40px 0;
+    }
+    .quality-content {
+      padding: 30px 20px;
+    }
+    .quality-btn {
+      align-self: center;
+    }
+  }
+</style>
+
+<section class="made-in-canada-section">
+  <div class="container py-5">
+    <!-- Heading -->
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">
+        {{ section.settings.heading_text }} 
+        <span class="vector-icon">
+          {% if section.settings.vector_icon %}
+            <img src="{{ section.settings.vector_icon | img_url: '100x100' }}" alt="{{ section.settings.vector_alt_text }}">
+          {% else %}
+            <div style="width: {{ section.settings.icon_size }}px; height: {{ section.settings.icon_size }}px; background: #ccc; display: inline-block; vertical-align: middle;"></div>
+          {% endif %}
+        </span>
+        {{ section.settings.heading_suffix }}
+      </h2>
+      <p class="subheading">
+        {{ section.settings.subheading_text }}
+      </p>
+    </div>
+
+    <!-- Feature Cards Row -->
+    <div class="row g-4 mb-5">
+      {% for block in section.blocks %}
+        {% if block.type == 'feature_card' %}
+          <div class="col-md-4">
+            <div class="feature-card">
+              <div class="icon-circle">
+                <i class="{{ block.settings.card_icon }}"></i>
+              </div>
+              <h6 class="fw-bold">{{ block.settings.card_title }}</h6>
+              <p class="text-muted mb-0">{{ block.settings.card_description }}</p>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+
+    <!-- Quality Section -->
+    <div class="row quality-section">
+      <div class="col-md-6 p-0">
+        {% if section.settings.quality_image %}
+          <img src="{{ section.settings.quality_image | img_url: '800x600' }}" alt="{{ section.settings.quality_image.alt }}" loading="lazy">
+        {% else %}
+          <div style="background: #ddd; height: 400px; display: flex; align-items: center; justify-content: center;">
+            <span style="color: #666;">Quality Image</span>
+          </div>
+        {% endif %}
+      </div>
+      <div class="col-md-6 quality-content">
+        <h4 class="fw-bold">{{ section.settings.quality_title }}</h4>
+        <p class="text-muted">
+          {{ section.settings.quality_description }}
+        </p>
+        <a href="{{ section.settings.quality_button_link }}" class="quality-btn">
+          {{ section.settings.quality_button_text }}
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Made in Canada",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#D7E9F7"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section Padding",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Heading Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "Made In Canada"
+    },
+    {
+      "type": "text",
+      "id": "heading_suffix",
+      "label": "Heading Suffix",
+      "default": "With Love"
+    },
+    {
+      "type": "image_picker",
+      "id": "vector_icon",
+      "label": "Vector Icon"
+    },
+    {
+      "type": "text",
+      "id": "vector_alt_text",
+      "label": "Icon Alt Text",
+      "default": "Canadian Icon"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading_text",
+      "label": "Subheading Text",
+      "default": "Our products are carefully crafted with the highest quality ingredients, ensuring the best care for your little one"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Heading Bottom Spacing",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "subheading_line_height",
+      "label": "Subheading Line Height",
+      "min": 1.2,
+      "max": 2.0,
+      "step": 0.1,
+      "default": 1.6
+    },
+    {
+      "type": "range",
+      "id": "icon_size",
+      "label": "Icon Size",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "icon_margin_bottom",
+      "label": "Icon Bottom Margin",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 4,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "icon_margin_left",
+      "label": "Icon Left Margin",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 4,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Feature Cards"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "transparent"
+    },
+    {
+      "type": "range",
+      "id": "card_border_width",
+      "label": "Card Border Width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Card Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Card Padding",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "card_title_size",
+      "label": "Card Title Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "card_title_weight",
+      "label": "Card Title Weight",
+      "options": [
+        {"value": "normal", "label": "Normal"},
+        {"value": "bold", "label": "Bold"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "800", "label": "Extra Bold"}
+      ],
+      "default": "bold"
+    },
+    {
+      "type": "color",
+      "id": "card_text_color",
+      "label": "Card Text Color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "range",
+      "id": "card_text_size",
+      "label": "Card Text Size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_text_line_height",
+      "label": "Card Text Line Height",
+      "min": 1.2,
+      "max": 2.0,
+      "step": 0.1,
+      "default": 1.5
+    },
+    {
+      "type": "range",
+      "id": "icon_circle_size",
+      "label": "Icon Circle Size",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "icon_background",
+      "label": "Icon Background",
+      "default": "#003B63"
+    },
+    {
+      "type": "color",
+      "id": "icon_color",
+      "label": "Icon Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "icon_font_size",
+      "label": "Icon Font Size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Quality Section"
+    },
+    {
+      "type": "image_picker",
+      "id": "quality_image",
+      "label": "Quality Section Image"
+    },
+    {
+      "type": "color",
+      "id": "quality_background",
+      "label": "Quality Section Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "quality_border_radius",
+      "label": "Quality Section Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "quality_section_margin",
+      "label": "Quality Section Top Margin",
+      "min": 20,
+      "max": 100,
+      "step": 10,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "quality_padding",
+      "label": "Quality Content Padding",
+      "min": 30,
+      "max": 80,
+      "step": 10,
+      "default": 50,
+      "unit": "px"
+    },
+    {
+      "type": "text",
+      "id": "quality_title",
+      "label": "Quality Title",
+      "default": "Canadian Quality Standards"
+    },
+    {
+      "type": "color",
+      "id": "quality_title_color",
+      "label": "Quality Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "quality_title_size",
+      "label": "Quality Title Size",
+      "min": 18,
+      "max": 36,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "quality_title_weight",
+      "label": "Quality Title Weight",
+      "options": [
+        {"value": "normal", "label": "Normal"},
+        {"value": "bold", "label": "Bold"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "800", "label": "Extra Bold"}
+      ],
+      "default": "bold"
+    },
+    {
+      "type": "textarea",
+      "id": "quality_description",
+      "label": "Quality Description",
+      "default": "We take pride in developing and manufacturing all our products in Canada, adhering to the highest quality and safety standards in the industry. From sourcing raw materials to the final packaging, every step follows strict quality control protocols."
+    },
+    {
+      "type": "color",
+      "id": "quality_text_color",
+      "label": "Quality Text Color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "range",
+      "id": "quality_text_size",
+      "label": "Quality Text Size",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "quality_text_line_height",
+      "label": "Quality Text Line Height",
+      "min": 1.2,
+      "max": 2.0,
+      "step": 0.1,
+      "default": 1.6
+    },
+    {
+      "type": "text",
+      "id": "quality_button_text",
+      "label": "Quality Button Text",
+      "default": "Learn About Our Process"
+    },
+    {
+      "type": "url",
+      "id": "quality_button_link",
+      "label": "Quality Button Link"
+    },
+    {
+      "type": "color",
+      "id": "quality_button_background",
+      "label": "Quality Button Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "quality_button_text",
+      "label": "Quality Button Text Color",
+      "default": "#01345B"
+    },
+    {
+      "type": "color",
+      "id": "quality_button_border",
+      "label": "Quality Button Border Color",
+      "default": "#003C61"
+    },
+    {
+      "type": "color",
+      "id": "quality_button_hover_background",
+      "label": "Quality Button Hover Background",
+      "default": "#003C61"
+    },
+    {
+      "type": "color",
+      "id": "quality_button_hover_text",
+      "label": "Quality Button Hover Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "quality_button_hover_border",
+      "label": "Quality Button Hover Border Color",
+      "default": "#003C61"
+    },
+    {
+      "type": "range",
+      "id": "quality_button_size",
+      "label": "Quality Button Font Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_card",
+      "name": "Feature Card",
+      "limit": 6,
+      "settings": [
+        {
+          "type": "text",
+          "id": "card_icon",
+          "label": "Card Icon Class",
+          "default": "bi bi-shield-check",
+          "info": "Use Bootstrap Icons class names (e.g., bi bi-shield-check)"
+        },
+        {
+          "type": "text",
+          "id": "card_title",
+          "label": "Card Title",
+          "default": "Why We're the Gentlest"
+        },
+        {
+          "type": "textarea",
+          "id": "card_description",
+          "label": "Card Description",
+          "default": "We believe delicate skin deserves extraordinary care from day one."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Made in Canada",
+      "category": "Content",
+      "blocks": [
+        {
+          "type": "feature_card",
+          "settings": {
+            "card_icon": "bi bi-shield-check",
+            "card_title": "Why We're the Gentlest",
+            "card_description": "We believe delicate skin deserves extraordinary care from day one."
+          }
+        },
+        {
+          "type": "feature_card",
+          "settings": {
+            "card_icon": "bi bi-leaf",
+            "card_title": "What Makes Us Different",
+            "card_description": "We formulate every product with 100% natural, plant-based ingredients, dermatologically tested and approved by parents."
+          }
+        },
+        {
+          "type": "feature_card",
+          "settings": {
+            "card_icon": "bi bi-heart",
+            "card_title": "Trusted by Parents. Loved by Kids.",
+            "card_description": "For over 20 years, we've cared for the next generation's skin — from bath time giggles to bedtime snuggles."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

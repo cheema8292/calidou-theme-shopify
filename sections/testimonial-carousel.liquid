@@ -1,0 +1,610 @@
+<!-- sections/testimonial-carousel.liquid -->
+<style>
+  .trusted-section {
+    background: {{ section.settings.background_color }};
+    padding: {{ section.settings.section_padding }}px 0;
+  }
+
+  .trusted-section h2 {
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_size }}px;
+    margin-bottom: {{ section.settings.heading_spacing }}px;
+  }
+
+  .testimonial-card {
+    background: {{ section.settings.card_background }};
+    border-radius: {{ section.settings.card_border_radius }}px;
+    box-shadow: {{ section.settings.card_shadow }};
+    padding: {{ section.settings.card_padding }}px;
+    height: 100%;
+    border: {{ section.settings.card_border_width }}px solid {{ section.settings.card_border_color }};
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .testimonial-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+
+  .testimonial-name {
+    color: {{ section.settings.name_color }};
+    font-weight: {{ section.settings.name_weight }};
+    font-size: {{ section.settings.name_size }}px;
+    margin-bottom: 0;
+  }
+
+  .testimonial-text {
+    color: {{ section.settings.text_color }};
+    font-size: {{ section.settings.text_size }}px;
+    line-height: {{ section.settings.text_line_height }};
+    margin-bottom: 0;
+  }
+
+  .star-rating {
+    color: {{ section.settings.star_color }};
+    font-size: {{ section.settings.star_size }}px;
+    margin-bottom: 10px;
+  }
+
+  .doctor-image {
+    width: {{ section.settings.image_size }}px;
+    height: {{ section.settings.image_size }}px;
+    object-fit: cover;
+  }
+
+  /* Carousel Controls */
+  .carousel-control-prev,
+  .carousel-control-next {
+    width: auto;
+  }
+
+  .carousel-control-prev {
+    left: -{{ section.settings.control_offset }}px;
+  }
+
+  .carousel-control-next {
+    right: -{{ section.settings.control_offset }}px;
+  }
+
+  .carousel-control-prev span,
+  .carousel-control-next span {
+    background: {{ section.settings.control_background }};
+    border-radius: 50%;
+    padding: 0.5rem;
+    width: {{ section.settings.control_size }}px;
+    height: {{ section.settings.control_size }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .carousel-control-prev i,
+  .carousel-control-next i {
+    font-size: {{ section.settings.control_icon_size }}px;
+    color: {{ section.settings.control_icon_color }};
+  }
+
+  .carousel-control-next,
+  .carousel-control-prev {
+    opacity: {{ section.settings.control_opacity }};
+    transition: opacity 0.3s ease;
+  }
+
+  .carousel-control-next:hover,
+  .carousel-control-prev:hover {
+    opacity: 1;
+  }
+
+  .view-all-btn {
+    background: {{ section.settings.button_background }};
+    color: {{ section.settings.button_text_color }};
+    border-radius: 50px;
+    padding: 10px 25px;
+    border: 2px solid {{ section.settings.button_border_color }};
+    text-decoration: none;
+    display: inline-block;
+    font-size: {{ section.settings.button_font_size }}px;
+    transition: all 0.3s ease;
+  }
+
+  .view-all-btn:hover {
+    background: {{ section.settings.button_hover_background }};
+    color: {{ section.settings.button_hover_text_color }};
+    border-color: {{ section.settings.button_hover_border_color }};
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 768px) {
+    .carousel-control-prev {
+      left: -20px;
+    }
+    .carousel-control-next {
+      right: -20px;
+    }
+    .trusted-section {
+      padding: 40px 0;
+    }
+  }
+</style>
+
+<section class="trusted-section py-5">
+  <div class="container text-center">
+    <!-- Heading -->
+    <h2 class="fw-bold mb-5">{{ section.settings.heading_text }}</h2>
+
+    <!-- Carousel -->
+    <div class="position-relative">
+      <div id="trustedCarousel-{{ section.id }}" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          {% comment %} Group testimonials into slides of 3 {% endcomment %}
+          {% for block in section.blocks %}
+            {% if block.type == 'testimonial' %}
+              {% assign slide_index = forloop.index0 | divided_by: 3 %}
+              {% assign modulo = forloop.index0 | modulo: 3 %}
+              
+              {% if modulo == 0 %}
+                <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                  <div class="row justify-content-center g-4">
+              {% endif %}
+                    
+                    <div class="col-md-4">
+                      <div class="testimonial-card">
+                        <div class="card-body text-start">
+                          <!-- Name + Image row -->
+                          <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h6 class="testimonial-name">{{ block.settings.doctor_name }}</h6>
+                            {% if block.settings.doctor_image %}
+                              <img src="{{ block.settings.doctor_image | img_url: '200x200' }}" 
+                                   alt="{{ block.settings.doctor_name }}" 
+                                   class="rounded-circle doctor-image">
+                            {% else %}
+                              <div class="rounded-circle doctor-image" 
+                                   style="background: #ddd; display: flex; align-items: center; justify-content: center;">
+                                <span style="color: #666; font-size: 12px;">No Image</span>
+                              </div>
+                            {% endif %}
+                          </div>
+                          
+                          <!-- Star Rating -->
+                          <div class="star-rating">
+                            {% for i in (1..5) %}
+                              ★
+                            {% endfor %}
+                          </div>
+                          
+                          <!-- Testimonial Text -->
+                          <p class="testimonial-text">{{ block.settings.testimonial_text }}</p>
+                        </div>
+                      </div>
+                    </div>
+              
+              {% if modulo == 2 or forloop.last %}
+                  </div>
+                </div>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Controls OUTSIDE -->
+      <button class="carousel-control-prev" type="button" data-bs-target="#trustedCarousel-{{ section.id }}" data-bs-slide="prev">
+        <span aria-hidden="true"><i class="bi bi-arrow-left"></i></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+
+      <button class="carousel-control-next" type="button" data-bs-target="#trustedCarousel-{{ section.id }}" data-bs-slide="next">
+        <span aria-hidden="true"><i class="bi bi-arrow-right"></i></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+    <!-- View All Button -->
+    {% if section.settings.show_button %}
+      <div class="mt-5 p-1">
+        <a href="{{ section.settings.button_link }}" class="view-all-btn">
+          {{ section.settings.button_text }}
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize carousel if Bootstrap is available
+  if (typeof bootstrap !== 'undefined') {
+    const carousel = new bootstrap.Carousel(document.getElementById('trustedCarousel-{{ section.id }}'));
+  }
+});
+</script>
+
+{% schema %}
+{
+  "name": "Testimonial Carousel",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "Trusted By Dermatologists"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#CEDFDC"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#01345B"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Heading Bottom Spacing",
+      "min": 20,
+      "max": 80,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section Padding",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Card Settings"
+    },
+    {
+      "type": "color",
+      "id": "card_background",
+      "label": "Card Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_border_color",
+      "label": "Card Border Color",
+      "default": "transparent"
+    },
+    {
+      "type": "range",
+      "id": "card_border_width",
+      "label": "Card Border Width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_border_radius",
+      "label": "Card Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "card_padding",
+      "label": "Card Padding",
+      "min": 15,
+      "max": 50,
+      "step": 5,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Text Settings"
+    },
+    {
+      "type": "color",
+      "id": "name_color",
+      "label": "Doctor Name Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "name_size",
+      "label": "Name Font Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "name_weight",
+      "label": "Name Font Weight",
+      "options": [
+        {"value": "normal", "label": "Normal"},
+        {"value": "bold", "label": "Bold"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "800", "label": "Extra Bold"}
+      ],
+      "default": "bold"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Testimonial Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text Font Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "text_line_height",
+      "label": "Text Line Height",
+      "min": 1.2,
+      "max": 2.0,
+      "step": 0.1,
+      "default": 1.5
+    },
+    {
+      "type": "header",
+      "content": "Star Rating"
+    },
+    {
+      "type": "color",
+      "id": "star_color",
+      "label": "Star Color",
+      "default": "#FFC107"
+    },
+    {
+      "type": "range",
+      "id": "star_size",
+      "label": "Star Size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "range",
+      "id": "image_size",
+      "label": "Doctor Image Size",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Carousel Controls"
+    },
+    {
+      "type": "color",
+      "id": "control_background",
+      "label": "Control Background",
+      "default": "#003B63"
+    },
+    {
+      "type": "color",
+      "id": "control_icon_color",
+      "label": "Control Icon Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "control_size",
+      "label": "Control Size",
+      "min": 30,
+      "max": 80,
+      "step": 2,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "control_icon_size",
+      "label": "Control Icon Size",
+      "min": 14,
+      "max": 30,
+      "step": 1,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "control_offset",
+      "label": "Control Horizontal Offset",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "control_opacity",
+      "label": "Control Opacity",
+      "min": 0.1,
+      "max": 1.0,
+      "step": 0.1,
+      "default": 0.9
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button",
+      "label": "Show Button",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "View All"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button Background",
+      "default": "#003B63"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#003B63"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button Hover Background",
+      "default": "#002A4A"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button Hover Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border_color",
+      "label": "Button Hover Border Color",
+      "default": "#002A4A"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button Font Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "testimonial",
+      "name": "Testimonial",
+      "settings": [
+        {
+          "type": "text",
+          "id": "doctor_name",
+          "label": "Doctor Name",
+          "default": "Dr. Emily Hart"
+        },
+        {
+          "type": "image_picker",
+          "id": "doctor_image",
+          "label": "Doctor Image"
+        },
+        {
+          "type": "textarea",
+          "id": "testimonial_text",
+          "label": "Testimonial Text",
+          "default": "As a dermatologist, I always recommend gentle, non-irritating products for sensitive skin. This formula meets all my standards for safety and effectiveness."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Testimonial Carousel",
+      "category": "Testimonials",
+      "blocks": [
+        {
+          "type": "testimonial",
+          "settings": {
+            "doctor_name": "Dr. Emily Hart",
+            "testimonial_text": "As a dermatologist, I always recommend gentle, non-irritating products for sensitive skin. This formula meets all my standards for safety and effectiveness."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "doctor_name": "Dr. Michael Reeves",
+            "testimonial_text": "Clinically tested and dermatologically approved — it's a safe choice for even the most delicate baby skin."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "doctor_name": "Dr. Sophia Nguyen",
+            "testimonial_text": "Formulated with skin-friendly ingredients and free from harsh chemicals, I confidently recommend it to my patients."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "doctor_name": "Dr. Sarah Johnson",
+            "testimonial_text": "The gentle formulation is perfect for sensitive skin. I recommend it to all my patients with skin conditions."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "doctor_name": "Dr. James Wilson",
+            "testimonial_text": "Excellent product that delivers on its promises. Safe and effective for the whole family."
+          }
+        },
+        {
+          "type": "testimonial",
+          "settings": {
+            "doctor_name": "Dr. Maria Garcia",
+            "testimonial_text": "As a pediatric dermatologist, I appreciate products that are both gentle and effective. This exceeds expectations."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

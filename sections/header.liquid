@@ -1,0 +1,195 @@
+<!-- sections/header.liquid -->
+<style>
+  .custom-navbar {
+    border: 2px solid {
+        {
+        section.settings.border_color
+      }
+    }
+
+    ;
+    border-radius: 50px;
+    padding: 0.5rem 2rem;
+
+    background: {
+        {
+        section.settings.background_color
+      }
+    }
+
+    ;
+  }
+
+  .custom-navbar .nav-item a {
+    color: {
+        {
+        section.settings.nav_text_color
+      }
+    }
+
+    ;
+
+    -webkit-text-stroke: 0.5px {
+        {
+        section.settings.stroke_color
+      }
+    }
+
+    ;
+    font-weight: 500;
+
+    font-size: {
+        {
+        section.settings.font_size
+      }
+    }
+
+    px;
+    transition: color 0.3s ease;
+  }
+
+  .custom-navbar .nav-item a:hover,
+  .custom-navbar .nav-item a.active {
+    color: {
+        {
+        section.settings.nav_hover_color
+      }
+    }
+
+    ;
+  }
+
+  .cart-badge {
+    position: absolute;
+    top: -6px;
+    right: -18px;
+
+    background: {
+        {
+        section.settings.badge_background
+      }
+    }
+
+    ;
+    color: #fff;
+
+    -webkit-text-stroke: 0.5px {
+        {
+        section.settings.stroke_color
+      }
+    }
+
+    ;
+    font-size: 12px;
+    padding: 2px 6px;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    line-height: 1;
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light custom-navbar">
+  <a class="navbar-brand fw-bold" href="{{ routes.root_url }}">
+    {{ section.settings.logo_text }}
+  </a>
+
+  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+    <ul class="navbar-nav">
+      {% for link in section.settings.menu.links %}
+      <li class="nav-item mx-2">
+        <a class="nav-link {% if link.active %}active{% endif %}" href="{{ link.url }}">
+          {{ link.title }}
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="d-flex align-items-center">
+    <a href="{{ routes.search_url }}" class="me-3">
+      <i class="bi bi-search"></i>
+    </a>
+    <a href="{{ routes.account_url }}" class="me-3">
+      <i class="bi bi-person"></i>
+    </a>
+
+    <!-- Cart with dynamic count -->
+    <a href="{{ routes.cart_url }}" class="position-relative">
+      <i class="bi bi-bag"></i>
+      {% if cart.item_count > 0 %}
+      <span class="cart-badge">{{ cart.item_count }}</span>
+      {% endif %}
+    </a>
+  </div>
+</nav>
+
+{% schema %}
+{
+"name": "Header",
+"settings": [
+{
+"type": "text",
+"id": "logo_text",
+"label": "Logo Text",
+"default": "CALIDOU"
+},
+{
+"type": "link_list",
+"id": "menu",
+"label": "Navigation Menu",
+"default": "main-menu"
+},
+{
+"type": "color",
+"id": "background_color",
+"label": "Background Color",
+"default": "#FFFFFF"
+},
+{
+"type": "color",
+"id": "border_color",
+"label": "Border Color",
+"default": "#003C61"
+},
+{
+"type": "color",
+"id": "nav_text_color",
+"label": "Nav Text Color",
+"default": "rgba(55, 65, 81, 0.6)"
+},
+{
+"type": "color",
+"id": "nav_hover_color",
+"label": "Nav Hover Color",
+"default": "#003C61"
+},
+{
+"type": "color",
+"id": "stroke_color",
+"label": "Text Stroke Color",
+"default": "#003C61"
+},
+{
+"type": "color",
+"id": "badge_background",
+"label": "Cart Badge Background",
+"default": "#003B63"
+},
+{
+"type": "range",
+"id": "font_size",
+"label": "Font Size",
+"min": 14,
+"max": 24,
+"step": 1,
+"default": 18,
+"unit": "px"
+}
+]
+}
+{% endschema %}

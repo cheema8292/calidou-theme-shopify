@@ -1,0 +1,145 @@
+<!-- sections/top-bar.liquid -->
+<style>
+    .top-bar {
+        align-items: center;
+
+        background: {
+                {
+                section.settings.background_color
+            }
+        }
+
+        ;
+
+        color: {
+                {
+                section.settings.text_color
+            }
+        }
+
+        ;
+
+        font-size: {
+                {
+                section.settings.font_size
+            }
+        }
+
+        px;
+        text-align: center;
+        display: flex;
+
+        justify-content: {
+                {
+                section.settings.text_alignment
+            }
+        }
+
+        ;
+
+        height: {
+                {
+                section.settings.height
+            }
+        }
+
+        px;
+        padding: 0 20px;
+    }
+
+        {
+        % if section.settings.show_top_bar==false %
+    }
+
+    .top-bar {
+        display: none !important;
+    }
+
+        {
+        % endif %
+    }
+</style>
+
+{% if section.settings.show_top_bar %}
+<div class="top-bar">
+    {{ section.settings.message_text }}
+</div>
+{% endif %}
+
+{% schema %}
+{
+"name": "Top Bar",
+"settings": [
+{
+"type": "checkbox",
+"id": "show_top_bar",
+"label": "Show Top Bar",
+"default": true
+},
+{
+"type": "text",
+"id": "message_text",
+"label": "Message Text",
+"default": "Free US Shipping over $49. Free US Returns."
+},
+{
+"type": "color",
+"id": "background_color",
+"label": "Background Color",
+"default": "#003B63"
+},
+{
+"type": "color",
+"id": "text_color",
+"label": "Text Color",
+"default": "#DEEAE7"
+},
+{
+"type": "range",
+"id": "font_size",
+"label": "Font Size",
+"min": 12,
+"max": 24,
+"step": 1,
+"default": 14,
+"unit": "px"
+},
+{
+"type": "range",
+"id": "height",
+"label": "Bar Height",
+"min": 30,
+"max": 100,
+"step": 5,
+"default": 50,
+"unit": "px"
+},
+{
+"type": "select",
+"id": "text_alignment",
+"label": "Text Alignment",
+"options": [
+{
+"value": "center",
+"label": "Center"
+},
+{
+"value": "flex-start",
+"label": "Left"
+},
+{
+"value": "flex-end",
+"label": "Right"
+}
+],
+"default": "center"
+}
+],
+"presets": [
+{
+"name": "Top Bar",
+"category": "Header"
+}
+]
+}
+{% endschema %}
