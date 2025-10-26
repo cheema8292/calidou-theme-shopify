@@ -1,0 +1,575 @@
+<!-- sections/baby-care-section.liquid -->
+<style>
+  .baby-care-section {
+    background-color: {{ section.settings.background_color }};
+    padding: {{ section.settings.section_padding }}px 0;
+  }
+
+  .baby-care-section .badge-text {
+    color: {{ section.settings.badge_color }} !important;
+    font-weight: {{ section.settings.badge_weight }};
+    font-size: {{ section.settings.badge_size }}px;
+    text-transform: {{ section.settings.badge_transform }};
+    margin-bottom: {{ section.settings.badge_spacing }}px;
+    display: block;
+  }
+
+  .baby-care-section h1 {
+    font-weight: {{ section.settings.heading_weight }};
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_size }}px;
+    margin-bottom: {{ section.settings.heading_spacing }}px;
+    line-height: {{ section.settings.heading_line_height }};
+  }
+
+  .baby-care-section .description {
+    color: {{ section.settings.text_color }};
+    font-size: {{ section.settings.text_size }}px;
+    line-height: {{ section.settings.text_line_height }};
+    margin-bottom: {{ section.settings.text_spacing }}px;
+  }
+
+  .baby-care-section .btn-primary {
+    background: {{ section.settings.button_background }};
+    border-color: {{ section.settings.button_border_color }};
+    border-radius: {{ section.settings.button_border_radius }}px;
+    padding: {{ section.settings.button_padding_vertical }}px {{ section.settings.button_padding_horizontal }}px;
+    color: {{ section.settings.button_text_color }};
+    font-size: {{ section.settings.button_font_size }}px;
+    font-weight: {{ section.settings.button_font_weight }};
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    border-width: {{ section.settings.button_border_width }}px;
+  }
+
+  .baby-care-section .btn-primary:hover {
+    background: {{ section.settings.button_hover_background }};
+    border-color: {{ section.settings.button_hover_border_color }};
+    color: {{ section.settings.button_hover_text_color }};
+    transform: translateY(-{{ section.settings.button_hover_lift }}px);
+  }
+
+  .baby-care-section img {
+    width: 100%;
+    height: {{ section.settings.image_height }}px;
+    object-fit: {{ section.settings.image_fit }};
+  }
+
+  .baby-care-content {
+    padding: {{ section.settings.content_padding }}px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .baby-care-section {
+      padding: {{ section.settings.section_padding_mobile }}px 0;
+      text-align: center;
+    }
+    
+    .baby-care-section h1 {
+      font-size: {{ section.settings.heading_size_mobile }}px;
+      margin-bottom: {{ section.settings.heading_spacing_mobile }}px;
+    }
+    
+    .baby-care-section .badge-text {
+      font-size: {{ section.settings.badge_size_mobile }}px;
+    }
+    
+    .baby-care-section .description {
+      font-size: {{ section.settings.text_size_mobile }}px;
+    }
+    
+    .baby-care-section img {
+      height: {{ section.settings.image_height_mobile }}px;
+    }
+    
+    .baby-care-content {
+      padding: {{ section.settings.content_padding_mobile }}px;
+    }
+  }
+
+  @media (min-width: 769px) {
+    .baby-care-content {
+      text-align: {{ section.settings.text_alignment }};
+    }
+  }
+</style>
+
+<section class="baby-care-section">
+  <div class="container-fluid">
+    <div class="row align-items-center">
+      <!-- Left Image -->
+      <div class="col-md-6 mb-4 mb-md-0 p-0 m-0">
+        {% if section.settings.baby_care_image %}
+          <img 
+            src="{{ section.settings.baby_care_image | img_url: '1200x800' }}" 
+            alt="{{ section.settings.image_alt_text }}" 
+            loading="lazy"
+          >
+        {% else %}
+          <div style="background: #ddd; height: {{ section.settings.image_height }}px; display: flex; align-items: center; justify-content: center;">
+            <span style="color: #666;">Baby Care Image</span>
+          </div>
+        {% endif %}
+      </div>
+      
+      <!-- Right Text -->
+      <div class="col-md-6">
+        <div class="baby-care-content">
+          <span class="badge-text">{{ section.settings.badge_text }}</span>
+          <h1 class="fw-bold mb-3">{{ section.settings.heading_text }}</h1>
+          <p class="description mb-4">{{ section.settings.description_text }}</p>
+          <a href="{{ section.settings.button_link }}" class="btn btn-primary">{{ section.settings.button_text }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Baby Care Section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#CEDFDC"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section Padding",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_mobile",
+      "label": "Section Padding (Mobile)",
+      "min": 30,
+      "max": 80,
+      "step": 10,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment (Desktop)",
+      "options": [
+        {"value": "left", "label": "Left"},
+        {"value": "center", "label": "Center"},
+        {"value": "right", "label": "Right"}
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Badge Settings"
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge Text",
+      "default": "Tested For Wellness"
+    },
+    {
+      "type": "color",
+      "id": "badge_color",
+      "label": "Badge Color",
+      "default": "#01345B"
+    },
+    {
+      "type": "range",
+      "id": "badge_size",
+      "label": "Badge Font Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "badge_size_mobile",
+      "label": "Badge Font Size (Mobile)",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "badge_weight",
+      "label": "Badge Font Weight",
+      "options": [
+        {"value": "normal", "label": "Normal"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "bold", "label": "Bold"}
+      ],
+      "default": "bold"
+    },
+    {
+      "type": "select",
+      "id": "badge_transform",
+      "label": "Badge Text Transform",
+      "options": [
+        {"value": "none", "label": "None"},
+        {"value": "uppercase", "label": "Uppercase"},
+        {"value": "lowercase", "label": "Lowercase"},
+        {"value": "capitalize", "label": "Capitalize"}
+      ],
+      "default": "uppercase"
+    },
+    {
+      "type": "range",
+      "id": "badge_spacing",
+      "label": "Badge Bottom Spacing",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Heading Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "Your Baby Deserves The Best Care"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading Size (Mobile)",
+      "min": 20,
+      "max": 40,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        {"value": "normal", "label": "Normal"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "bold", "label": "Bold"},
+        {"value": "800", "label": "Extra Bold"}
+      ],
+      "default": "bold"
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Heading Bottom Spacing",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing_mobile",
+      "label": "Heading Bottom Spacing (Mobile)",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading Line Height",
+      "min": 1.0,
+      "max": 1.5,
+      "step": 0.1,
+      "default": 1.2
+    },
+    {
+      "type": "header",
+      "content": "Description Settings"
+    },
+    {
+      "type": "textarea",
+      "id": "description_text",
+      "label": "Description Text",
+      "default": "At Calidou, we care for you & baby — with gentle shampoos, soothing oils, and nourishing creams for baby's delicate skin."
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "text_size_mobile",
+      "label": "Text Size (Mobile)",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "text_line_height",
+      "label": "Text Line Height",
+      "min": 1.2,
+      "max": 2.0,
+      "step": 0.1,
+      "default": 1.6
+    },
+    {
+      "type": "range",
+      "id": "text_spacing",
+      "label": "Text Bottom Spacing",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "Explore the Products"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button Background",
+      "default": "#01345B"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#01345B"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button Hover Background",
+      "default": "#002A4A"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button Hover Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border_color",
+      "label": "Button Hover Border Color",
+      "default": "#002A4A"
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "label": "Button Border Width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button Border Radius",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "label": "Button Vertical Padding",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "label": "Button Horizontal Padding",
+      "min": 20,
+      "max": 50,
+      "step": 5,
+      "default": 25,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button Font Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "button_font_weight",
+      "label": "Button Font Weight",
+      "options": [
+        {"value": "normal", "label": "Normal"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "bold", "label": "Bold"}
+      ],
+      "default": "normal"
+    },
+    {
+      "type": "range",
+      "id": "button_hover_lift",
+      "label": "Button Hover Lift",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 2,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Image Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "baby_care_image",
+      "label": "Baby Care Image"
+    },
+    {
+      "type": "text",
+      "id": "image_alt_text",
+      "label": "Image Alt Text",
+      "default": "Baby Care"
+    },
+    {
+      "type": "range",
+      "id": "image_height",
+      "label": "Image Height",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "default": 500,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "image_height_mobile",
+      "label": "Image Height (Mobile)",
+      "min": 200,
+      "max": 500,
+      "step": 50,
+      "default": 300,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "image_fit",
+      "label": "Image Fit",
+      "options": [
+        {"value": "cover", "label": "Cover"},
+        {"value": "contain", "label": "Contain"},
+        {"value": "fill", "label": "Fill"}
+      ],
+      "default": "cover"
+    },
+    {
+      "type": "range",
+      "id": "content_padding",
+      "label": "Content Padding",
+      "min": 20,
+      "max": 80,
+      "step": 10,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "content_padding_mobile",
+      "label": "Content Padding (Mobile)",
+      "min": 20,
+      "max": 60,
+      "step": 10,
+      "default": 30,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Baby Care Section",
+      "category": "Content"
+    }
+  ]
+}
+{% endschema %}

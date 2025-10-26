@@ -1,0 +1,453 @@
+<!-- sections/ingredients-banner.liquid -->
+<style>
+  .ingredients-banner {
+    background: {% if section.settings.background_image %}url("{{ section.settings.background_image | img_url: '2000x' }}"){% else %}{{ section.settings.background_color }}{% endif %} center/cover no-repeat;
+    padding: {{ section.settings.section_padding }}px 20px;
+    text-align: {{ section.settings.text_alignment }};
+    color: #fff;
+    position: relative;
+    border-radius: {{ section.settings.border_radius }}px;
+    margin: {{ section.settings.section_margin }}px 0;
+    min-height: {{ section.settings.min_height }}px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: {{ section.settings.text_alignment }};
+  }
+
+  .ingredients-banner::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: {{ section.settings.overlay_color }};
+    border-radius: {{ section.settings.border_radius }}px;
+    z-index: 1;
+  }
+
+  .ingredients-banner > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .ingredients-banner h1 {
+    color: {{ section.settings.heading_color }};
+    font-weight: {{ section.settings.heading_weight }};
+    font-size: {{ section.settings.heading_size }}px;
+    margin-bottom: {{ section.settings.heading_spacing }}px;
+    line-height: {{ section.settings.heading_line_height }};
+  }
+
+  .ingredients-banner .btn-ingredients {
+    background: {{ section.settings.button_background }};
+    color: {{ section.settings.button_text_color }};
+    border-radius: {{ section.settings.button_border_radius }}px;
+    padding: {{ section.settings.button_padding_vertical }}px {{ section.settings.button_padding_horizontal }}px;
+    text-decoration: none;
+    font-weight: {{ section.settings.button_font_weight }};
+    font-size: {{ section.settings.button_font_size }}px;
+    border: {{ section.settings.button_border_width }}px solid {{ section.settings.button_border_color }};
+    display: inline-block;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2;
+  }
+
+  .ingredients-banner .btn-ingredients:hover {
+    background: {{ section.settings.button_hover_background }};
+    color: {{ section.settings.button_hover_text_color }};
+    border-color: {{ section.settings.button_hover_border_color }};
+    transform: translateY(-{{ section.settings.button_hover_lift }}px);
+    box-shadow: 0 {{ section.settings.button_hover_lift }}px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Optional decorative elements */
+  {% if section.settings.show_decoration %}
+    .ingredients-banner::before {
+      content: "";
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      bottom: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: {{ section.settings.border_radius | minus: 4 }}px;
+      z-index: 1;
+      pointer-events: none;
+    }
+  {% endif %}
+
+  @media (max-width: 768px) {
+    .ingredients-banner {
+      padding: {{ section.settings.section_padding_mobile }}px 20px;
+      min-height: {{ section.settings.min_height_mobile }}px;
+    }
+    
+    .ingredients-banner h1 {
+      font-size: {{ section.settings.heading_size_mobile }}px;
+      margin-bottom: {{ section.settings.heading_spacing_mobile }}px;
+    }
+    
+    .ingredients-banner .btn-ingredients {
+      padding: {{ section.settings.button_padding_vertical_mobile }}px {{ section.settings.button_padding_horizontal_mobile }}px;
+      font-size: {{ section.settings.button_font_size_mobile }}px;
+    }
+  }
+</style>
+
+<section class="ingredients-banner">
+  <h1 class="fw-bold mb-3">{{ section.settings.heading_text }}</h1>
+  <a href="{{ section.settings.button_link }}" class="btn-ingredients">
+    {{ section.settings.button_text }}
+  </a>
+</section>
+
+{% schema %}
+{
+  "name": "Ingredients Banner",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Background Settings"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background Image",
+      "info": "Recommended size: 2000x800px for best quality"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color Fallback",
+      "default": "#003B63",
+      "info": "Used if no background image is selected"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Color",
+      "default": "rgba(0, 0, 0, 0.6)"
+    },
+    {
+      "type": "range",
+      "id": "min_height",
+      "label": "Minimum Height",
+      "min": 200,
+      "max": 800,
+      "step": 50,
+      "default": 400,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "min_height_mobile",
+      "label": "Minimum Height (Mobile)",
+      "min": 150,
+      "max": 500,
+      "step": 50,
+      "default": 300,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Section Spacing"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section Padding",
+      "min": 40,
+      "max": 200,
+      "step": 10,
+      "default": 100,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_mobile",
+      "label": "Section Padding (Mobile)",
+      "min": 30,
+      "max": 120,
+      "step": 10,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_margin",
+      "label": "Section Margin",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Heading Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "Key Ingredients"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "min": 24,
+      "max": 72,
+      "step": 2,
+      "default": 48,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading Size (Mobile)",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        {"value": "normal", "label": "Normal"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "bold", "label": "Bold"},
+        {"value": "800", "label": "Extra Bold"}
+      ],
+      "default": "bold"
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Heading Bottom Spacing",
+      "min": 10,
+      "max": 50,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing_mobile",
+      "label": "Heading Bottom Spacing (Mobile)",
+      "min": 8,
+      "max": 30,
+      "step": 2,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading Line Height",
+      "min": 1.0,
+      "max": 1.5,
+      "step": 0.1,
+      "default": 1.2
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        {"value": "flex-start", "label": "Left"},
+        {"value": "center", "label": "Center"},
+        {"value": "flex-end", "label": "Right"}
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button Text",
+      "default": "View More"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#003B5C"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "label": "Button Border Width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button Hover Background",
+      "default": "#003B5C"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button Hover Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border_color",
+      "label": "Button Hover Border Color",
+      "default": "#003B5C"
+    },
+    {
+      "type": "range",
+      "id": "button_border_radius",
+      "label": "Button Border Radius",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 25,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical",
+      "label": "Button Vertical Padding",
+      "min": 6,
+      "max": 30,
+      "step": 2,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal",
+      "label": "Button Horizontal Padding",
+      "min": 15,
+      "max": 60,
+      "step": 5,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_padding_vertical_mobile",
+      "label": "Button Vertical Padding (Mobile)",
+      "min": 6,
+      "max": 20,
+      "step": 2,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_padding_horizontal_mobile",
+      "label": "Button Horizontal Padding (Mobile)",
+      "min": 12,
+      "max": 40,
+      "step": 4,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button Font Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size_mobile",
+      "label": "Button Font Size (Mobile)",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "button_font_weight",
+      "label": "Button Font Weight",
+      "options": [
+        {"value": "normal", "label": "Normal"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "bold", "label": "Bold"}
+      ],
+      "default": "600"
+    },
+    {
+      "type": "range",
+      "id": "button_hover_lift",
+      "label": "Button Hover Lift",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "default": 3,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Decoration"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_decoration",
+      "label": "Show Border Decoration",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ingredients Banner",
+      "category": "Promotional"
+    }
+  ]
+}
+{% endschema %}

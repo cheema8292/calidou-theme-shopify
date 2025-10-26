@@ -1,0 +1,941 @@
+<!-- sections/collections-grid.liquid -->
+<style>
+  .additional-collections-section {
+    padding: {{ section.settings.section_padding }}px 0;
+    background: {{ section.settings.background_color }};
+  }
+
+  .section-header {
+    color: {{ section.settings.heading_color }};
+    font-size: {{ section.settings.heading_size }}px;
+    font-weight: {{ section.settings.heading_weight }};
+    margin-bottom: 0;
+  }
+
+  .explore-btn {
+    background: {{ section.settings.button_background }};
+    color: {{ section.settings.button_text_color }};
+    border-radius: 50px;
+    padding: 10px 25px;
+    border: 2px solid {{ section.settings.button_border_color }};
+    text-decoration: none;
+    display: inline-block;
+    font-size: {{ section.settings.button_font_size }}px;
+    transition: all 0.3s ease;
+  }
+
+  .explore-btn:hover {
+    background: {{ section.settings.button_hover_background }};
+    color: {{ section.settings.button_hover_text_color }};
+    border-color: {{ section.settings.button_hover_border_color }};
+    transform: translateY(-2px);
+  }
+
+  /* Collection Grid Styles */
+  .collection-item {
+    position: relative;
+    overflow: hidden;
+    height: {{ section.settings.collection_height }}px;
+  }
+
+  .collection-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+
+  .collection-overlay {
+    position: absolute;
+    inset: 0;
+    background: {{ section.settings.overlay_color }};
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .collection-overlay h3 {
+    margin-bottom: 15px;
+    font-weight: {{ section.settings.overlay_title_weight }};
+    font-size: {{ section.settings.overlay_title_size }}px;
+    color: {{ section.settings.overlay_text_color }};
+  }
+
+  .collection-overlay .btn {
+    background: {{ section.settings.overlay_button_background }};
+    color: {{ section.settings.overlay_button_text_color }};
+    border: 2px solid {{ section.settings.overlay_button_border }};
+    border-radius: 50px;
+    padding: 8px 20px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .collection-overlay .btn:hover {
+    background: {{ section.settings.overlay_button_hover_background }};
+    color: {{ section.settings.overlay_button_hover_text_color }};
+    border-color: {{ section.settings.overlay_button_hover_border }};
+  }
+
+  .collection-item:hover img {
+    transform: scale(1.05);
+  }
+
+  .collection-item:hover .collection-overlay {
+    opacity: 1;
+  }
+
+  /* Guarantee Banner */
+  .guarantee-banner {
+    background: {{ section.settings.guarantee_background }};
+    color: {{ section.settings.guarantee_text_color }};
+    padding: {{ section.settings.guarantee_padding }}px;
+    text-align: center;
+    margin: {{ section.settings.guarantee_margin }}px 0;
+    border-radius: {{ section.settings.guarantee_border_radius }}px;
+  }
+
+  .guarantee-banner h4 {
+    font-size: {{ section.settings.guarantee_title_size }}px;
+    font-weight: {{ section.settings.guarantee_title_weight }};
+    margin-bottom: 15px;
+    color: {{ section.settings.guarantee_title_color }};
+  }
+
+  .guarantee-banner p {
+    font-size: {{ section.settings.guarantee_text_size }}px;
+    margin-bottom: 20px;
+    line-height: {{ section.settings.guarantee_line_height }};
+  }
+
+  .guarantee-banner .btn {
+    background: {{ section.settings.guarantee_button_background }};
+    color: {{ section.settings.guarantee_button_text_color }};
+    border-radius: 50px;
+    padding: 10px 25px;
+    border: 2px solid {{ section.settings.guarantee_button_border }};
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  .guarantee-banner .btn:hover {
+    background: {{ section.settings.guarantee_button_hover_background }};
+    color: {{ section.settings.guarantee_button_hover_text_color }};
+    border-color: {{ section.settings.guarantee_button_hover_border }};
+  }
+
+  /* Info Grid Styles */
+  .info-grid .block {
+    padding: {{ section.settings.info_block_padding }}px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: {{ section.settings.info_block_height }}px;
+  }
+
+  .info-grid .bg-lightblue {
+    background: {{ section.settings.info_lightblue_bg }};
+  }
+
+  .info-grid .bg-darkblue {
+    background: {{ section.settings.info_darkblue_bg }};
+  }
+
+  .info-grid .bg-beige {
+    background: {{ section.settings.info_beige_bg }};
+  }
+
+  .info-grid .block h3 {
+    font-size: {{ section.settings.info_title_size }}px;
+    font-weight: {{ section.settings.info_title_weight }};
+    margin-bottom: 15px;
+    color: {{ section.settings.info_title_color }};
+  }
+
+  .info-grid .bg-darkblue h3 {
+    color: {{ section.settings.info_dark_title_color }};
+  }
+
+  .info-grid .block p {
+    font-size: {{ section.settings.info_text_size }}px;
+    margin-bottom: 20px;
+    line-height: {{ section.settings.info_line_height }};
+    color: {{ section.settings.info_text_color }};
+  }
+
+  .info-grid .bg-darkblue p {
+    color: {{ section.settings.info_dark_text_color }};
+  }
+
+  .info-grid .block .btn {
+    border-radius: 50px;
+    padding: 8px 20px;
+    text-decoration: none;
+    display: inline-block;
+    align-self: flex-start;
+  }
+
+  .info-grid img {
+    width: 100%;
+    height: {{ section.settings.info_block_height }}px;
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    .collection-item {
+      height: {{ section.settings.collection_height_mobile }}px;
+    }
+    
+    .info-grid .block,
+    .info-grid img {
+      height: {{ section.settings.info_block_height_mobile }}px;
+    }
+    
+    .guarantee-banner {
+      padding: {{ section.settings.guarantee_padding_mobile }}px;
+    }
+  }
+</style>
+
+<section class="additional-collections-section mt-5">
+  <div class="container-fluid">
+    <!-- Section Header -->
+    <div class="container d-flex justify-content-between align-items-center mb-4">
+      <h3 class="section-header">{{ section.settings.section_title }}</h3>
+      <a href="{{ section.settings.explore_link }}" class="explore-btn">{{ section.settings.explore_text }}</a>
+    </div>
+
+    <!-- Collections Grid -->
+    <div class="row g-3 collection-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'collection_item' %}
+          <div class="col-md-6 p-0 m-0">
+            <div class="collection-item">
+              {% if block.settings.collection_image %}
+                <img src="{{ block.settings.collection_image | img_url: '800x600' }}" alt="{{ block.settings.collection_title }}" loading="lazy">
+              {% else %}
+                <div style="background: #ddd; height: 100%; display: flex; align-items: center; justify-content: center;">
+                  <span style="color: #666;">Collection Image</span>
+                </div>
+              {% endif %}
+              <div class="collection-overlay">
+                <h3 class="text-white">{{ block.settings.collection_title }}</h3>
+                <a href="{{ block.settings.collection_link }}" class="btn btn-light">{{ block.settings.button_text }}</a>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+
+      <!-- Guarantee Banner -->
+      {% if section.settings.show_guarantee %}
+        <div class="guarantee-banner">
+          <h4>{{ section.settings.guarantee_title }}</h4>
+          <p>{{ section.settings.guarantee_description }}</p>
+          <a href="{{ section.settings.guarantee_link }}" class="btn">{{ section.settings.guarantee_button_text }}</a>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Info Grid -->
+    {% if section.settings.show_info_grid %}
+      <div class="container mt-5">
+        <div class="row g-3 info-grid">
+          {% for block in section.blocks %}
+            {% if block.type == 'info_block' %}
+              <div class="col-md-5 p-0 m-0">
+                <div class="block {{ block.settings.background_color }} h-100">
+                  <h3{% if block.settings.background_color == 'bg-darkblue' %} class="text-light"{% endif %}>{{ block.settings.info_title }}</h3>
+                  <p{% if block.settings.background_color == 'bg-darkblue' %} class="text-light"{% endif %}>{{ block.settings.info_description }}</p>
+                  <a href="{{ block.settings.info_link }}" class="btn{% if block.settings.background_color == 'bg-darkblue' %} btn-light{% else %} btn-shop{% endif %}">
+                    {{ block.settings.info_button_text }}
+                  </a>
+                </div>
+              </div>
+            {% elsif block.type == 'info_image' %}
+              <div class="col-md-5 p-0 m-0">
+                {% if block.settings.info_image %}
+                  <img src="{{ block.settings.info_image | img_url: '600x400' }}" alt="{{ block.settings.info_alt }}" loading="lazy">
+                {% else %}
+                  <div style="background: #eee; height: 100%; display: flex; align-items: center; justify-content: center;">
+                    <span style="color: #666;">Info Image</span>
+                  </div>
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collections Grid",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Our Collections"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section Padding",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "default": 80,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Header Settings"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#000000"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Weight",
+      "options": [
+        {"value": "normal", "label": "Normal"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "bold", "label": "Bold"}
+      ],
+      "default": "bold"
+    },
+    {
+      "type": "text",
+      "id": "explore_text",
+      "label": "Explore Button Text",
+      "default": "Explore"
+    },
+    {
+      "type": "url",
+      "id": "explore_link",
+      "label": "Explore Button Link"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button Background",
+      "default": "#003B63"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#003B63"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button Hover Background",
+      "default": "#002A4A"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button Hover Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border_color",
+      "label": "Button Hover Border Color",
+      "default": "#002A4A"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "label": "Button Font Size",
+      "min": 12,
+      "max": 20,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Collection Grid Settings"
+    },
+    {
+      "type": "range",
+      "id": "collection_height",
+      "label": "Collection Item Height",
+      "min": 200,
+      "max": 600,
+      "step": 50,
+      "default": 400,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "collection_height_mobile",
+      "label": "Collection Item Height (Mobile)",
+      "min": 150,
+      "max": 400,
+      "step": 50,
+      "default": 250,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay Background",
+      "default": "rgba(0, 0, 0, 0.5)"
+    },
+    {
+      "type": "color",
+      "id": "overlay_text_color",
+      "label": "Overlay Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "overlay_title_size",
+      "label": "Overlay Title Size",
+      "min": 18,
+      "max": 36,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "overlay_title_weight",
+      "label": "Overlay Title Weight",
+      "options": [
+        {"value": "normal", "label": "Normal"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "bold", "label": "Bold"}
+      ],
+      "default": "bold"
+    },
+    {
+      "type": "color",
+      "id": "overlay_button_background",
+      "label": "Overlay Button Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "overlay_button_text_color",
+      "label": "Overlay Button Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "overlay_button_border",
+      "label": "Overlay Button Border",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "overlay_button_hover_background",
+      "label": "Overlay Button Hover Background",
+      "default": "#003B63"
+    },
+    {
+      "type": "color",
+      "id": "overlay_button_hover_text_color",
+      "label": "Overlay Button Hover Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "overlay_button_hover_border",
+      "label": "Overlay Button Hover Border",
+      "default": "#003B63"
+    },
+    {
+      "type": "header",
+      "content": "Guarantee Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_guarantee",
+      "label": "Show Guarantee Banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "guarantee_title",
+      "label": "Guarantee Title",
+      "default": "30-Day Gentle Skin Guarantee"
+    },
+    {
+      "type": "textarea",
+      "id": "guarantee_description",
+      "label": "Guarantee Description",
+      "default": "Try Calidou for 30 days. If you are not 100% satisfied with your child's skin, return it for a full refund."
+    },
+    {
+      "type": "text",
+      "id": "guarantee_button_text",
+      "label": "Guarantee Button Text",
+      "default": "Explore Our Collections"
+    },
+    {
+      "type": "url",
+      "id": "guarantee_link",
+      "label": "Guarantee Button Link"
+    },
+    {
+      "type": "color",
+      "id": "guarantee_background",
+      "label": "Guarantee Background",
+      "default": "#F8F9FA"
+    },
+    {
+      "type": "color",
+      "id": "guarantee_text_color",
+      "label": "Guarantee Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "guarantee_title_color",
+      "label": "Guarantee Title Color",
+      "default": "#003B63"
+    },
+    {
+      "type": "range",
+      "id": "guarantee_title_size",
+      "label": "Guarantee Title Size",
+      "min": 18,
+      "max": 36,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "guarantee_title_weight",
+      "label": "Guarantee Title Weight",
+      "options": [
+        {"value": "normal", "label": "Normal"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "bold", "label": "Bold"}
+      ],
+      "default": "bold"
+    },
+    {
+      "type": "range",
+      "id": "guarantee_text_size",
+      "label": "Guarantee Text Size",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "guarantee_line_height",
+      "label": "Guarantee Line Height",
+      "min": 1.2,
+      "max": 2.0,
+      "step": 0.1,
+      "default": 1.6
+    },
+    {
+      "type": "range",
+      "id": "guarantee_padding",
+      "label": "Guarantee Padding",
+      "min": 20,
+      "max": 80,
+      "step": 10,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "guarantee_padding_mobile",
+      "label": "Guarantee Padding (Mobile)",
+      "min": 20,
+      "max": 60,
+      "step": 10,
+      "default": 30,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "guarantee_margin",
+      "label": "Guarantee Margin",
+      "min": 20,
+      "max": 80,
+      "step": 10,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "guarantee_border_radius",
+      "label": "Guarantee Border Radius",
+      "min": 0,
+      "max": 30,
+      "step": 2,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "guarantee_button_background",
+      "label": "Guarantee Button Background",
+      "default": "#003B63"
+    },
+    {
+      "type": "color",
+      "id": "guarantee_button_text_color",
+      "label": "Guarantee Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "guarantee_button_border",
+      "label": "Guarantee Button Border",
+      "default": "#003B63"
+    },
+    {
+      "type": "color",
+      "id": "guarantee_button_hover_background",
+      "label": "Guarantee Button Hover Background",
+      "default": "#002A4A"
+    },
+    {
+      "type": "color",
+      "id": "guarantee_button_hover_text_color",
+      "label": "Guarantee Button Hover Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "guarantee_button_hover_border",
+      "label": "Guarantee Button Hover Border",
+      "default": "#002A4A"
+    },
+    {
+      "type": "header",
+      "content": "Info Grid Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_info_grid",
+      "label": "Show Info Grid",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "info_block_height",
+      "label": "Info Block Height",
+      "min": 200,
+      "max": 500,
+      "step": 50,
+      "default": 300,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "info_block_height_mobile",
+      "label": "Info Block Height (Mobile)",
+      "min": 150,
+      "max": 400,
+      "step": 50,
+      "default": 250,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "info_block_padding",
+      "label": "Info Block Padding",
+      "min": 20,
+      "max": 60,
+      "step": 5,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "info_lightblue_bg",
+      "label": "Light Blue Background",
+      "default": "#D7E9F7"
+    },
+    {
+      "type": "color",
+      "id": "info_darkblue_bg",
+      "label": "Dark Blue Background",
+      "default": "#003B63"
+    },
+    {
+      "type": "color",
+      "id": "info_beige_bg",
+      "label": "Beige Background",
+      "default": "#F5EBDF"
+    },
+    {
+      "type": "color",
+      "id": "info_title_color",
+      "label": "Info Title Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "info_dark_title_color",
+      "label": "Dark Background Title Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "info_title_size",
+      "label": "Info Title Size",
+      "min": 18,
+      "max": 36,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "info_title_weight",
+      "label": "Info Title Weight",
+      "options": [
+        {"value": "normal", "label": "Normal"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "bold", "label": "Bold"}
+      ],
+      "default": "bold"
+    },
+    {
+      "type": "color",
+      "id": "info_text_color",
+      "label": "Info Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "info_dark_text_color",
+      "label": "Dark Background Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "info_text_size",
+      "label": "Info Text Size",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "info_line_height",
+      "label": "Info Line Height",
+      "min": 1.2,
+      "max": 2.0,
+      "step": 0.1,
+      "default": 1.6
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection_item",
+      "name": "Collection Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "collection_image",
+          "label": "Collection Image"
+        },
+        {
+          "type": "text",
+          "id": "collection_title",
+          "label": "Collection Title",
+          "default": "Babies Collection"
+        },
+        {
+          "type": "url",
+          "id": "collection_link",
+          "label": "Collection Link"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button Text",
+          "default": "Shop Now"
+        }
+      ]
+    },
+    {
+      "type": "info_block",
+      "name": "Info Block",
+      "settings": [
+        {
+          "type": "select",
+          "id": "background_color",
+          "label": "Background Color",
+          "options": [
+            {"value": "bg-lightblue", "label": "Light Blue"},
+            {"value": "bg-darkblue", "label": "Dark Blue"},
+            {"value": "bg-beige", "label": "Beige"}
+          ],
+          "default": "bg-lightblue"
+        },
+        {
+          "type": "text",
+          "id": "info_title",
+          "label": "Info Title",
+          "default": "Quality over Quantity!"
+        },
+        {
+          "type": "textarea",
+          "id": "info_description",
+          "label": "Info Description",
+          "default": "Gentle, dermatologist-tested formulations that care for your little one's skin."
+        },
+        {
+          "type": "text",
+          "id": "info_button_text",
+          "label": "Button Text",
+          "default": "Read Our Collection"
+        },
+        {
+          "type": "url",
+          "id": "info_link",
+          "label": "Button Link"
+        }
+      ]
+    },
+    {
+      "type": "info_image",
+      "name": "Info Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "info_image",
+          "label": "Info Image"
+        },
+        {
+          "type": "text",
+          "id": "info_alt",
+          "label": "Image Alt Text",
+          "default": "Info Image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collections Grid",
+      "category": "Collections",
+      "blocks": [
+        {
+          "type": "collection_item",
+          "settings": {
+            "collection_title": "Babies Collection",
+            "button_text": "Shop Now"
+          }
+        },
+        {
+          "type": "collection_item",
+          "settings": {
+            "collection_title": "Kids Collection",
+            "button_text": "Shop Now"
+          }
+        },
+        {
+          "type": "collection_item",
+          "settings": {
+            "collection_title": "Baby Care",
+            "button_text": "Shop Now"
+          }
+        },
+        {
+          "type": "collection_item",
+          "settings": {
+            "collection_title": "Skin Care",
+            "button_text": "Shop Now"
+          }
+        },
+        {
+          "type": "info_block",
+          "settings": {
+            "background_color": "bg-lightblue",
+            "info_title": "Quality over Quantity!",
+            "info_description": "Gentle, dermatologist-tested formulations that care for your little one's skin.",
+            "info_button_text": "Read Our Collection"
+          }
+        },
+        {
+          "type": "info_image"
+        },
+        {
+          "type": "info_image"
+        },
+        {
+          "type": "info_block",
+          "settings": {
+            "background_color": "bg-darkblue",
+            "info_title": "Never Ever",
+            "info_description": "Only safe ingredients. Absolutely no harmful chemicals.",
+            "info_button_text": "Read Our Collection"
+          }
+        },
+        {
+          "type": "info_block",
+          "settings": {
+            "background_color": "bg-beige",
+            "info_title": "Always Always",
+            "info_description": "100% natural plant-based ingredients.",
+            "info_button_text": "Read Our Collection"
+          }
+        },
+        {
+          "type": "info_image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

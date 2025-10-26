@@ -1,0 +1,811 @@
+<!-- sections/community-section.liquid -->
+<style>
+  .community-section {
+    background: {{ section.settings.background_color }};
+    padding: {{ section.settings.section_padding }}px 0;
+    min-height: {{ section.settings.section_height }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: {{ section.settings.text_color }};
+  }
+
+  .community-section h2 {
+    font-weight: {{ section.settings.heading_weight }};
+    font-size: {{ section.settings.heading_size }}px;
+    color: {{ section.settings.heading_color }};
+    margin-bottom: {{ section.settings.heading_spacing }}px;
+    line-height: {{ section.settings.heading_line_height }};
+  }
+
+  .community-section .subheading {
+    font-size: {{ section.settings.subheading_size }}px;
+    margin-bottom: {{ section.settings.subheading_spacing }}px;
+    line-height: {{ section.settings.subheading_line_height }};
+    color: {{ section.settings.subheading_color }};
+  }
+
+  .community-section .disclaimer {
+    font-size: {{ section.settings.disclaimer_size }}px;
+    color: {{ section.settings.disclaimer_color }};
+    margin-bottom: {{ section.settings.disclaimer_spacing }}px;
+    line-height: {{ section.settings.disclaimer_line_height }};
+  }
+
+  /* Newsletter Form Styles */
+  .newsletter-form {
+    max-width: {{ section.settings.form_max_width }}px;
+    margin: 0 auto {{ section.settings.form_spacing }}px;
+  }
+
+  .input-group {
+    background-color: {{ section.settings.input_background }};
+    border-radius: {{ section.settings.input_border_radius }}px;
+    padding: {{ section.settings.input_padding }}px;
+    border: {{ section.settings.input_border_width }}px solid {{ section.settings.input_border_color }};
+  }
+
+  .input-group .form-control {
+    border-radius: {{ section.settings.input_border_radius }}px 0 0 {{ section.settings.input_border_radius }}px;
+    padding: {{ section.settings.input_padding_vertical }}px {{ section.settings.input_padding_horizontal }}px;
+    border: none;
+    font-size: {{ section.settings.input_font_size }}px;
+    background: transparent;
+    color: {{ section.settings.input_text_color }};
+  }
+
+  .input-group .form-control::placeholder {
+    color: {{ section.settings.input_placeholder_color }};
+  }
+
+  .input-group .btn {
+    border-radius: 50% !important;
+    background: {{ section.settings.button_background }};
+    color: {{ section.settings.button_text_color }};
+    border: {{ section.settings.button_border_width }}px solid {{ section.settings.button_border_color }};
+    width: {{ section.settings.button_size }}px;
+    height: {{ section.settings.button_size }}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+  }
+
+  .input-group .btn:hover {
+    background: {{ section.settings.button_hover_background }};
+    color: {{ section.settings.button_hover_text_color }};
+    border-color: {{ section.settings.button_hover_border_color }};
+    transform: scale(1.05);
+  }
+
+  .input-group .btn i {
+    font-size: {{ section.settings.button_icon_size }}px;
+  }
+
+  /* Stats Styles */
+  .stats-grid {
+    margin-top: {{ section.settings.stats_spacing }}px;
+  }
+
+  .stat-item h4 {
+    font-weight: {{ section.settings.stat_number_weight }};
+    font-size: {{ section.settings.stat_number_size }}px;
+    color: {{ section.settings.stat_number_color }};
+    margin-bottom: {{ section.settings.stat_number_spacing }}px;
+    line-height: {{ section.settings.stat_number_line_height }};
+  }
+
+  .stat-item p {
+    font-size: {{ section.settings.stat_text_size }}px;
+    color: {{ section.settings.stat_text_color }};
+    margin-bottom: 0;
+    line-height: {{ section.settings.stat_text_line_height }};
+  }
+
+  @media (max-width: 768px) {
+    .community-section {
+      padding: {{ section.settings.section_padding_mobile }}px 0;
+      min-height: {{ section.settings.section_height_mobile }}px;
+    }
+    
+    .community-section h2 {
+      font-size: {{ section.settings.heading_size_mobile }}px;
+    }
+    
+    .community-section .subheading {
+      font-size: {{ section.settings.subheading_size_mobile }}px;
+    }
+    
+    .community-section .disclaimer {
+      font-size: {{ section.settings.disclaimer_size_mobile }}px;
+    }
+    
+    .input-group .form-control {
+      font-size: {{ section.settings.input_font_size_mobile }}px;
+      padding: {{ section.settings.input_padding_vertical_mobile }}px {{ section.settings.input_padding_horizontal_mobile }}px;
+    }
+    
+    .stat-item h4 {
+      font-size: {{ section.settings.stat_number_size_mobile }}px;
+    }
+    
+    .stat-item p {
+      font-size: {{ section.settings.stat_text_size_mobile }}px;
+    }
+  }
+</style>
+
+<section class="community-section py-5">
+  <div class="container text-center">
+    <!-- Heading -->
+    <h2 class="fw-bold mb-3">{{ section.settings.heading_text }}</h2>
+    
+    <!-- Subheading -->
+    <p class="subheading mb-4">{{ section.settings.subheading_text }}</p>
+
+    <!-- Newsletter Form -->
+    {% form 'customer', class: 'newsletter-form' %}
+      {{ form.errors | default_errors }}
+      {% if form.posted_successfully? %}
+        <div class="alert alert-success mb-3" role="alert">
+          {{ 'general.newsletter_form.confirmation' | t }}
+        </div>
+      {% else %}
+        <div class="input-group input-group-lg">
+          <input 
+            type="email" 
+            name="contact[email]" 
+            class="form-control" 
+            placeholder="{{ section.settings.input_placeholder }}"
+            aria-label="{{ section.settings.input_placeholder }}"
+            required
+          >
+          <button class="btn" type="submit">
+            <i class="{{ section.settings.button_icon }}"></i>
+          </button>
+        </div>
+        
+        <input type="hidden" name="contact[tags]" value="newsletter">
+      {% endif %}
+    {% endform %}
+
+    <!-- Disclaimer -->
+    <small class="disclaimer d-block mb-4">{{ section.settings.disclaimer_text }}</small>
+
+    <!-- Stats -->
+    <div class="row text-center g-4 justify-content-center stats-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'stat_item' %}
+          <div class="col-6 col-md-3 stat-item">
+            <h4 class="fw-bold">{{ block.settings.stat_number }}</h4>
+            <p>{{ block.settings.stat_description }}</p>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Community Section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section Settings"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#01345B"
+    },
+    {
+      "type": "range",
+      "id": "section_padding",
+      "label": "Section Padding",
+      "min": 40,
+      "max": 120,
+      "step": 10,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_mobile",
+      "label": "Section Padding (Mobile)",
+      "min": 30,
+      "max": 80,
+      "step": 10,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_height",
+      "label": "Section Height",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "default": 499,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_height_mobile",
+      "label": "Section Height (Mobile)",
+      "min": 400,
+      "max": 700,
+      "step": 50,
+      "default": 500,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "header",
+      "content": "Heading Settings"
+    },
+    {
+      "type": "text",
+      "id": "heading_text",
+      "label": "Heading Text",
+      "default": "Join Our Parenting Community"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading Size",
+      "min": 24,
+      "max": 60,
+      "step": 2,
+      "default": 36,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_size_mobile",
+      "label": "Heading Size (Mobile)",
+      "min": 20,
+      "max": 40,
+      "step": 2,
+      "default": 28,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "heading_weight",
+      "label": "Heading Font Weight",
+      "options": [
+        {"value": "normal", "label": "Normal"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "bold", "label": "Bold"},
+        {"value": "800", "label": "Extra Bold"}
+      ],
+      "default": "700"
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Heading Bottom Spacing",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "heading_line_height",
+      "label": "Heading Line Height",
+      "min": 1.0,
+      "max": 1.5,
+      "step": 0.1,
+      "default": 1.2
+    },
+    {
+      "type": "header",
+      "content": "Subheading Settings"
+    },
+    {
+      "type": "textarea",
+      "id": "subheading_text",
+      "label": "Subheading Text",
+      "default": "Subscribe to receive parenting tips, exclusive offers, and updates on new products."
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size",
+      "label": "Subheading Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "subheading_size_mobile",
+      "label": "Subheading Size (Mobile)",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "subheading_spacing",
+      "label": "Subheading Bottom Spacing",
+      "min": 10,
+      "max": 40,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "subheading_line_height",
+      "label": "Subheading Line Height",
+      "min": 1.2,
+      "max": 2.0,
+      "step": 0.1,
+      "default": 1.6
+    },
+    {
+      "type": "header",
+      "content": "Newsletter Form Settings"
+    },
+    {
+      "type": "range",
+      "id": "form_max_width",
+      "label": "Form Max Width",
+      "min": 300,
+      "max": 800,
+      "step": 50,
+      "default": 500,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "form_spacing",
+      "label": "Form Bottom Spacing",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "text",
+      "id": "input_placeholder",
+      "label": "Input Placeholder Text",
+      "default": "Enter your email address"
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Input Background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "input_text_color",
+      "label": "Input Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "input_placeholder_color",
+      "label": "Input Placeholder Color",
+      "default": "#6B7280"
+    },
+    {
+      "type": "color",
+      "id": "input_border_color",
+      "label": "Input Border Color",
+      "default": "transparent"
+    },
+    {
+      "type": "range",
+      "id": "input_border_width",
+      "label": "Input Border Width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "input_border_radius",
+      "label": "Input Border Radius",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "default": 50,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "input_padding",
+      "label": "Input Group Padding",
+      "min": 5,
+      "max": 20,
+      "step": 1,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "input_padding_vertical",
+      "label": "Input Vertical Padding",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "input_padding_horizontal",
+      "label": "Input Horizontal Padding",
+      "min": 15,
+      "max": 30,
+      "step": 1,
+      "default": 20,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "input_padding_vertical_mobile",
+      "label": "Input Vertical Padding (Mobile)",
+      "min": 8,
+      "max": 16,
+      "step": 1,
+      "default": 10,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "input_padding_horizontal_mobile",
+      "label": "Input Horizontal Padding (Mobile)",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "input_font_size",
+      "label": "Input Font Size",
+      "min": 14,
+      "max": 20,
+      "step": 1,
+      "default": 16,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "input_font_size_mobile",
+      "label": "Input Font Size (Mobile)",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Button Settings"
+    },
+    {
+      "type": "text",
+      "id": "button_icon",
+      "label": "Button Icon Class",
+      "default": "bi bi-send",
+      "info": "Use Bootstrap Icons class names (e.g., bi bi-send)"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "label": "Button Background",
+      "default": "#003B63"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_border_color",
+      "label": "Button Border Color",
+      "default": "#003B63"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_background",
+      "label": "Button Hover Background",
+      "default": "#002A4A"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_text_color",
+      "label": "Button Hover Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_border_color",
+      "label": "Button Hover Border Color",
+      "default": "#002A4A"
+    },
+    {
+      "type": "range",
+      "id": "button_border_width",
+      "label": "Button Border Width",
+      "min": 0,
+      "max": 5,
+      "step": 1,
+      "default": 0,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_size",
+      "label": "Button Size",
+      "min": 40,
+      "max": 80,
+      "step": 5,
+      "default": 50,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "button_icon_size",
+      "label": "Button Icon Size",
+      "min": 14,
+      "max": 24,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Disclaimer Settings"
+    },
+    {
+      "type": "textarea",
+      "id": "disclaimer_text",
+      "label": "Disclaimer Text",
+      "default": "By subscribing, you agree to receive marketing emails from Calidou. Don't worry, we respect your privacy."
+    },
+    {
+      "type": "color",
+      "id": "disclaimer_color",
+      "label": "Disclaimer Color",
+      "default": "rgba(255, 255, 255, 0.8)"
+    },
+    {
+      "type": "range",
+      "id": "disclaimer_size",
+      "label": "Disclaimer Size",
+      "min": 12,
+      "max": 16,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "disclaimer_size_mobile",
+      "label": "Disclaimer Size (Mobile)",
+      "min": 10,
+      "max": 14,
+      "step": 1,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "disclaimer_spacing",
+      "label": "Disclaimer Bottom Spacing",
+      "min": 10,
+      "max": 40,
+      "step": 5,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "disclaimer_line_height",
+      "label": "Disclaimer Line Height",
+      "min": 1.2,
+      "max": 2.0,
+      "step": 0.1,
+      "default": 1.4
+    },
+    {
+      "type": "header",
+      "content": "Stats Settings"
+    },
+    {
+      "type": "range",
+      "id": "stats_spacing",
+      "label": "Stats Top Spacing",
+      "min": 20,
+      "max": 80,
+      "step": 10,
+      "default": 40,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "stat_number_color",
+      "label": "Stat Number Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "range",
+      "id": "stat_number_size",
+      "label": "Stat Number Size",
+      "min": 20,
+      "max": 48,
+      "step": 2,
+      "default": 32,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "stat_number_size_mobile",
+      "label": "Stat Number Size (Mobile)",
+      "min": 18,
+      "max": 36,
+      "step": 2,
+      "default": 24,
+      "unit": "px"
+    },
+    {
+      "type": "select",
+      "id": "stat_number_weight",
+      "label": "Stat Number Weight",
+      "options": [
+        {"value": "normal", "label": "Normal"},
+        {"value": "600", "label": "Semi Bold"},
+        {"value": "bold", "label": "Bold"},
+        {"value": "800", "label": "Extra Bold"}
+      ],
+      "default": "bold"
+    },
+    {
+      "type": "range",
+      "id": "stat_number_spacing",
+      "label": "Stat Number Bottom Spacing",
+      "min": 5,
+      "max": 20,
+      "step": 1,
+      "default": 8,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "stat_number_line_height",
+      "label": "Stat Number Line Height",
+      "min": 1.0,
+      "max": 1.5,
+      "step": 0.1,
+      "default": 1.2
+    },
+    {
+      "type": "color",
+      "id": "stat_text_color",
+      "label": "Stat Text Color",
+      "default": "rgba(255, 255, 255, 0.8)"
+    },
+    {
+      "type": "range",
+      "id": "stat_text_size",
+      "label": "Stat Text Size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "stat_text_size_mobile",
+      "label": "Stat Text Size (Mobile)",
+      "min": 10,
+      "max": 16,
+      "step": 1,
+      "default": 12,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "stat_text_line_height",
+      "label": "Stat Text Line Height",
+      "min": 1.2,
+      "max": 2.0,
+      "step": 0.1,
+      "default": 1.4
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat_item",
+      "name": "Stat Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "stat_number",
+          "label": "Stat Number",
+          "default": "10k+"
+        },
+        {
+          "type": "text",
+          "id": "stat_description",
+          "label": "Stat Description",
+          "default": "Happy Parents"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Community Section",
+      "category": "Promotional",
+      "blocks": [
+        {
+          "type": "stat_item",
+          "settings": {
+            "stat_number": "10k+",
+            "stat_description": "Happy Parents"
+          }
+        },
+        {
+          "type": "stat_item",
+          "settings": {
+            "stat_number": "15+",
+            "stat_description": "Natural Products"
+          }
+        },
+        {
+          "type": "stat_item",
+          "settings": {
+            "stat_number": "99%",
+            "stat_description": "Satisfied Families"
+          }
+        },
+        {
+          "type": "stat_item",
+          "settings": {
+            "stat_number": "5★",
+            "stat_description": "Average Rating"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
